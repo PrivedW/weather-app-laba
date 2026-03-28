@@ -19,6 +19,11 @@ func (l *SimpleLogger) Debug(msg string) {
 	fmt.Printf("[%s] DEBUG: %s\n", time.Now().Format("2006-01-02 15:04:05"), msg)
 }
 
-func (l *SimpleLogger) Error(msg string) {
+func (l *SimpleLogger) Error(msg string, err error) {
+	if err != nil {
+		fmt.Printf("[%s] ERROR: %s: %s\n", time.Now().Format("2006-01-02 15:04:05"), msg, err.Error())
+		return
+	}
+
 	fmt.Printf("[%s] ERROR: %s\n", time.Now().Format("2006-01-02 15:04:05"), msg)
 }
