@@ -7,16 +7,17 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/PrivedW/weather-app-laba_info/internal/domain/models"
 	"github.com/PrivedW/weather-app-laba_info/internal/pkg/app/cli"
 )
 
 const url = "https://api.open-meteo.com/v1/forecast"
 
 type response struct {
-	Curr cli.Current `json:"current"`
+	Curr models.TempInfo `json:"current"`
 }
 type weatherInfo struct {
-	c        cli.Current
+	c        models.TempInfo
 	l        cli.Logger
 	isLoaded bool
 }
@@ -27,6 +28,10 @@ func New(l cli.Logger) cli.WeatherInfo {
 	}
 }
 func (wi *weatherInfo) getWeatherInfo(lat, long float64) error {
+	if wi.isLoaded {
+		return nil
+	}
+
 	var response response
 	params := fmt.Sprintf(
 		"latitude=%f&longitude=%f&current=temperature_2m",
@@ -64,13 +69,9 @@ func (wi *weatherInfo) getWeatherInfo(lat, long float64) error {
 	wi.isLoaded = true
 	return nil
 }
-func (wi *weatherInfo) GetTemperature(lat, long float64) cli.Current {
-	if !wi.isLoaded {
-		if err := wi.getWeatherInfo(lat, long); err != nil {
-			wi.l.Error("can`t load weather info", err)
-			return cli.Current{}
-		}
-	}
-
-	return wi.c
+func (wi *weatherInfo) GetTemperature(lat, long float64) (models.TempInfo, error) {
+	err := wi.getWeatherInfo(lat, long)
+	return models.TempInfo{
+		Temp: wi.c.Temp,
+	}, err
 }
