@@ -3,6 +3,8 @@ name: Go CI
 on:
   push:
     branches:
+      - main
+      - master
       - testsAncCICD
   pull_request:
 
