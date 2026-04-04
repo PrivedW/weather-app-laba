@@ -2,6 +2,8 @@ package cli
 
 import (
 	"fmt"
+
+	"github.com/PrivedW/weather-app-laba_info/pkg/config"
 )
 
 type Logger interface {
@@ -21,19 +23,21 @@ type WeatherInfo interface {
 type cliApp struct {
 	logger Logger
 	wi     WeatherInfo
+	c      config.Config
 }
 
-func New(logger Logger, wi WeatherInfo) *cliApp {
+func New(logger Logger, wi WeatherInfo, c config.Config) *cliApp {
 	return &cliApp{
 		logger: logger,
 		wi:     wi,
+		c:      c,
 	}
 }
 
 func (c *cliApp) Run() error {
 	fmt.Printf(
 		"Температура воздуха- %.2f градусов цельсия\n",
-		c.wi.GetTemperature(53.6688, 23.8223).Temp,
+		c.wi.GetTemperature(c.c.L.Lat, c.c.L.Long).Temp,
 	)
 
 	return nil
