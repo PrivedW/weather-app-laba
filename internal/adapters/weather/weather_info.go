@@ -12,6 +12,8 @@ import (
 
 const url = "https://api.open-meteo.com/v1/forecast"
 
+var httpGet = http.Get
+
 type response struct {
 	Curr cli.Current `json:"current"`
 }
@@ -35,7 +37,7 @@ func (wi *weatherInfo) getWeatherInfo(lat, long float64) error {
 	)
 	url := fmt.Sprintf("%s?%s", url, params)
 	wi.l.Debug(fmt.Sprintf("url was generated success- %s", url))
-	resp, err := http.Get(url)
+	resp, err := httpGet(url)
 	if err != nil {
 		wi.l.Error("can`t get weather data", err)
 		customErr := errors.New("can`t get weather data from openmeteo")

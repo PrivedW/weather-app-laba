@@ -10,7 +10,8 @@ import (
 
 func main() {
 	logger := cli.NewSimpleLogger()
-	app := cli.New(logger, weather.New(logger))
+	wi := weather.New(logger)
+	app := cli.New(logger, wi)
 	err := app.Run()
 	if err != nil {
 		fmt.Printf("Some error- %s\n", err.Error())
