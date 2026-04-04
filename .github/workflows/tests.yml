@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - master
-      - testsAncCICD
+      - testsAndCICD
   pull_request:
 
 jobs:
