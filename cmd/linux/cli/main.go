@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"os"
 
 	"github.com/PrivedW/weather-app-laba_info/internal/pkg/app/cli"
@@ -12,20 +13,20 @@ import (
 func main() {
 	arguments := flags.Parse()
 
-	r, err := os.Open(arguments.Path)
-	if err != nil {
-		panic(err)
-	}
-	defer func() {
-		_ = r.Close()
-	}()
-
-	c, err := config.Parse(r)
-	if err != nil {
-		panic(err)
-	}
-
 	logger := cli.NewSimpleLogger()
+	c, err := config.ParsePath(arguments.Path)
+	if err != nil {
+		if !errors.Is(err, os.ErrNotExist) {
+			panic(err)
+		}
+
+		logger.Info("config file was not found, default settings will be used")
+		c, err = config.ParseDefault()
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	wi := providers.GetProvider(c, logger)
 	app := cli.New(logger, wi, c)
 	err = app.Run()

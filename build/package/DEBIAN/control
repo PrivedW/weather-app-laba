@@ -1,0 +1,7 @@
+Package: weather-app-gui
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: PrivedW
+Description: GUI weather application

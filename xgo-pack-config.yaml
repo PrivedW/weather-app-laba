@@ -1,0 +1,36 @@
+$schema: https://raw.githubusercontent.com/cardinalby/xgo-pack/master/config_schema/config.schema.v1.json
+presets:
+  - xgo-pack:gui
+dist_dir: dist
+tmp_dir: dist/tmp
+src:
+  main_pkg: cmd/linux/gui
+  icon: xgo-pack:default-icon # Set path to your icon
+targets:
+  common:
+    product_name: WeatherApp
+    version: 1.0.0
+    identifier: com.github.PrivedW.weather_app_laba_info
+    copyright: © 2026, PrivedW
+    high_dpi: true
+    bin_name: weather-app-gui
+  linux:
+    common:
+      deb:
+        deb_name: weather-app-gui.deb
+        name: weather-app-gui
+        section: utils
+        maintainer: com.github.PrivedW
+        dst_bin_path: /usr/bin/weather-app-gui
+        desktop_entry:
+          add_desktop_entry: true
+          add_icon: true
+          dst_icon_path: /usr/share/icons/weather-app-gui.png
+          name: WeatherApp
+          type: Application
+          terminal: false
+          no_display: false
+    amd64:
+      out_dir: linux_amd64
+      build_bin: true
+      build_deb: true
